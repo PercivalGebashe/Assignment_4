@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>T-Shirt Management</title>
+</head>
+<!-- Extend the layout.html file -->
+<main th:replace="~{layout :: content}">
+  <div class="container">
+    <h1>T-Shirt Management</h1>
+    <button id="addTShirtBtn">Add T-Shirt</button>
+
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Color</th>
+        <th>Size</th>
+        <th>Gender</th>
+        <th>Price</th>
+        <th>Rating</th>
+        <th>Availability</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="tshirt : ${tshirts}">
+        <td th:text="${tshirt.id}"></td>
+        <td th:text="${tshirt.name}"></td>
+        <td th:text="${tshirt.colour}"></td>
+        <td th:text="${tshirt.size}"></td>
+        <td th:text="${tshirt.gender}"></td>
+        <td th:text="${tshirt.price}"></td>
+        <td th:text="${tshirt.rating}"></td>
+        <td th:text="${tshirt.availability}"></td>
+        <td>
+          <button class="edit-btn" th:data-id="${tshirt.id}">Edit</button>
+          <button class="delete-btn" th:data-id="${tshirt.id}">Delete</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+</html>
