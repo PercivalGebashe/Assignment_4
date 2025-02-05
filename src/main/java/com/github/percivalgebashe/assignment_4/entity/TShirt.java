@@ -15,7 +15,7 @@ public class TShirt {
 
     @Id
     @Column(name = "id", nullable = false)
-    private Long id;
+    private String id;
 
     @Column(name = "name", nullable = false)
     private String name;

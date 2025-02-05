@@ -1,30 +1,49 @@
 package com.github.percivalgebashe.assignment_4.dto;
 
 import com.github.percivalgebashe.assignment_4.entity.TShirt;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import lombok.*;
+import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Component
+@ToString
 public class TShirtDTO {
-    private Long id;
 
+    @NotBlank
+    private String id;
+
+    @NotBlank
     private String name;
 
+    @NotBlank
     private String colour;
 
+    @NotBlank
+    @Pattern(regexp = "[AZ]+")
     private Character gender;
 
+    @NotBlank
+    @Pattern(regexp = "[SML]+")
     private Character size;
 
+    @NotBlank
+    @Min(0)
     private Double price;
 
+    @NotBlank
+    @Min(0)
+    @Max(5)
     private Double rating;
 
+    @NotBlank
+    @Pattern(regexp = "[YN]")
     private Character availability;
 
     // Factory method to convert Entity to DTO

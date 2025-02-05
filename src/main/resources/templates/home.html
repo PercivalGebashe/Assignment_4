@@ -1,52 +1,102 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>T-Shirt Catalog</title>
   <link rel="stylesheet" href="/css/styles.css">
+  <script defer src="/js/script.js"></script>
 </head>
 <body>
-<h1>Find Your T-Shirt</h1>
+<header class="header">
+  <nav class="navbar">
+    <h1 class="logo">T-Shirt Catalog</h1>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </div>
+  </nav>
+</header>
 
-<form method="get" action="/">
-  <label>Colour: <input type="text" name="colour"></label>
-  <label>Gender: <select name="gender">
-    <option value="">Any</option>
-    <option value="M">Male</option>
-    <option value="F">Female</option>
-  </select></label>
-  <label>Size: <select name="size">
-    <option value="">Any</option>
-    <option value="S">S</option>
-    <option value="M">M</option>
-    <option value="L">L</option>
-  </select></label>
-  <label>Min Price: <input type="number" step="0.01" name="minPrice"></label>
-  <label>Max Price: <input type="number" step="0.01" name="maxPrice"></label>
-  <label>Min Rating: <input type="number" step="0.1" name="minRating"></label>
-  <button type="submit">Search</button>
-</form>
+<div class="container">
+  <aside class="sidebar">
+    <h2>Filters</h2>
+    <form id="filterForm" method="POST" formenctype="application/json" action="/api/v1/web/filter">
+      <div class="filter-group">
+        <label for="col">Colour:</label>
+        <input type="text" name="colour" id="col" placeholder="Enter color" value="" />
+      </div>
 
-<table>
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th>Colour</th>
-    <th>Gender</th>
-    <th>Size</th>
-    <th>Price</th>
-    <th>Rating</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="tshirt : ${tshirts}">
-    <td th:text="${tshirt.name}"></td>
-    <td th:text="${tshirt.colour}"></td>
-    <td th:text="${tshirt.gender}"></td>
-    <td th:text="${tshirt.size}"></td>
-    <td th:text="${tshirt.price}"></td>
-    <td th:text="${tshirt.rating}"></td>
-  </tr>
-  </tbody>
-</table>
+      <div class="filter-group">
+        <label>Gender:</label>
+        <label>
+          <select name="gender">
+            <option value=''>Any</option>
+            <option value='M'>Male</option>
+            <option value='F'>Female</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="filter-group">
+        <label>Size:</label>
+        <label>
+          <select name="size">
+            <option value="">Any</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="filter-group">
+        <label>Price Range:</label>
+        <label>
+          <input type="number" step="0.01" min="0.00" name="minPrice" placeholder="Min price" />
+        </label>
+        <label>
+          <input type="number" step="0.01" min="0.00" name="maxPrice" placeholder="Max price" />
+        </label>
+      </div>
+
+      <div class="filter-group">
+        <label>Min Rating:</label>
+        <label>
+          <input type="number" step="0.1" name="minRating" min="0.0" max="5.0" placeholder="0-5" value="0" />
+        </label>
+        <label>Max Rating:</label>
+        <label>
+          <input type="number" step="0.1" name="maxRating" min="0.0" max="5.0" placeholder="0-5" value="5" />
+        </label>
+      </div>
+
+      <button type="submit" class="btn-apply">Apply Filters</button>
+    </form>
+  </aside>
+
+  <main class="main-content">
+    <div class="product-grid">
+      <div th:each="tshirt : ${tshirts}" class="product-card">
+        <img src="https://picsum.photos/200" alt="T-Shirt" class="product-image">
+        <div class="product-info">
+          <h3 th:text="${tshirt.name}"></h3>
+          <p><strong>Colour:</strong> <span th:text="${tshirt.colour}"></span></p>
+          <p><strong>Gender:</strong> <span th:text="${tshirt.gender}"></span></p>
+          <p><strong>Size:</strong> <span th:text="${tshirt.size}"></span></p>
+          <p><strong>Price:</strong> R<span th:text="${tshirt.price}"></span></p>
+          <p><strong>Rating:</strong> <span th:text="${tshirt.rating}"></span>/5</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="pagination">
+    <button id="prevPage" class="btn-pagination">&laquo; Prev</button>
+    <span id="pageNumber" class="page-indicator">Page 1</span>
+    <button id="nextPage" class="btn-pagination">Next &raquo;</button>
+  </div>
+</div>
 </body>
 </html>

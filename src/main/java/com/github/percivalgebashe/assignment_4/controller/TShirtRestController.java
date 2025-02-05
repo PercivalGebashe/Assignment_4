@@ -1,13 +1,14 @@
 package com.github.percivalgebashe.assignment_4.controller;
 
 import com.github.percivalgebashe.assignment_4.dto.TShirtDTO;
-import com.github.percivalgebashe.assignment_4.entity.TShirt;
+import com.github.percivalgebashe.assignment_4.dto.TShirtFilterDTO;
 import com.github.percivalgebashe.assignment_4.service.TShirtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,16 +23,22 @@ public class TShirtRestController {
         this.tShirtService = tShirtService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<TShirtDTO>> getTShirts(
-            @RequestParam(required = false) String colour,
-            @RequestParam(required = false) Character gender,
-            @RequestParam(required = false) Character size,
-            @RequestParam(required = false) Double minPrice,
-            @RequestParam(required = false) Double maxPrice,
-            @RequestParam(required = false) Double minRating
-    ) {
-        List<TShirtDTO> tshirts = tShirtService.getTShirtsByFilters(colour, gender, size, minPrice, maxPrice, minRating);
-        return new ResponseEntity<>(tshirts, HttpStatus.OK);
+    @PostMapping(value = "/filter", consumes = "application/x-www-form-urlencoded")
+    public ResponseEntity<HttpStatus> getTShirtByFilter(TShirtFilterDTO filterDTO, Model model) {
+        List<TShirtDTO> filteredShirts = tShirtService.getTShirtsByFilters(filterDTO);
+        model.addAttribute("filteredShirts", filteredShirts);
+        return ResponseEntity.ok().build();
     }
+
+    @GetMapping
+    public ResponseEntity<List<TShirtDTO>> getTShirts() {
+        List<TShirtDTO> tshirts = tShirtService.getTShirts();
+        return ResponseEntity.ok(tshirts);
+    }
+
+//    @PostMapping(value = "/ids", consumes = "application/json")
+//    public ResponseEntity<List<TShirtDTO>> getTShirtsByIds(@RequestBody List<TShirtIdDTO> ids) {
+//        List<TShirtDTO> tShirtDTOs = tShirtService.findAll(ids);
+//        return ResponseEntity.ok(tShirtDTOs);
+//    }
 }
