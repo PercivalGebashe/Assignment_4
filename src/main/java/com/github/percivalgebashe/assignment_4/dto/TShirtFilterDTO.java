@@ -21,10 +21,6 @@ public class TShirtFilterDTO {
 
     private Character size;
 
-    private Double price;
-
-    private Double rating;
-
     private Character availability;
 
     private Double minPrice;
